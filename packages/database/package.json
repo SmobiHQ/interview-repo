@@ -1,0 +1,39 @@
+{
+  "name": "@repo/database",
+  "version": "1.0.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:migrate:dev": "prisma format && prisma migrate dev",
+    "db:push": "prisma db push",
+    "db:seed": "yarn run build && tsx src/seed.ts",
+    "dev": "prisma studio",
+    "format": "prisma format",
+    "build": "prisma format && prisma generate",
+    "generate": "prisma generate",
+    "lint": "eslint . --max-warnings 0",
+    "prebuild": "npm run generate",
+    "predev": "npm run generate",
+    "studio": "prisma studio"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.10.2",
+    "tsx": "^4.11.0"
+  },
+  "prisma": {
+    "seed": "tsx ./src/seed.ts"
+  },
+  "type": "module",
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "prisma": "^5.10.2",
+    "rimraf": "^5.0.5",
+    "tsup": "^8.0.2",
+    "tsx": "^4.7.1",
+    "typescript": "^5.3.3"
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["**/.env.*local"],
+  "globalEnv": ["PORT", "NODE_ENV"],
+  "pipeline": {
+    "build": {
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**", "public/dist/**"],
+      "dependsOn": [
+        "^build:smobi-commons",
+        "^build:database",
+        "^build",
+        "generate"
+      ],
+      "env": [
+        "NEXT_PUBLIC_API_HOST",
+        "DATABASE_URL",
+        "API_URL",
+        "LINKEDIN_CLIENT_ID",
+        "ENCODED_LINKEDIN_REDIRECT_URI",
+        "LINKEDIN_CLIENT_ID",
+        "ENCODED_LINKEDIN_REDIRECT_URI"
+      ]
+    },
+    "build:smobi-commons": {
+      "outputs": ["dist/**"]
+    },
+    "build:database": {
+      "outputs": ["dist/**"]
+    },
+    "localstack": {
+      "cache": false,
+      "persistent": true
+    },
+    "test": {
+      "outputs": ["coverage/**"],
+      "dependsOn": ["generate"]
+    },
+    "lint": {
+      "dependsOn": ["^build", "generate"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["generate", "build"]
+    },
+    "python:install": {
+      "cache": false
+    },
+    "python:dev": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["localstack", "generate"]
+    },
+    "clean": {
+      "cache": false
+    },
+    "db:migrate:deploy": {
+      "env": ["DATABASE_URL"],
+      "dependsOn": ["generate"]
+    },
+    "db:migrate:dev": {
+      "env": ["DATABASE_URL"],
+      "dependsOn": ["generate"]
+    },
+    "db:push": {
+      "env": ["DATABASE_URL"],
+      "dependsOn": ["generate"]
+    },
+    "db:seed": {
+      "env": ["DATABASE_URL"],
+      "dependsOn": ["generate"]
+    },
+    "generate": {
+      "dependsOn": []
+    }
+  }
+}
